@@ -57,7 +57,7 @@ char *Printf(char *dst, const void *end, const char *fmt...) {
     return nullptr;
   }
 
-  char *buffer = dst;
+  char *returnBuffer = dst;
   bool lastWasPercent = false;
   va_list args;
   va_start(args, fmt);
@@ -165,5 +165,5 @@ char *Printf(char *dst, const void *end, const char *fmt...) {
   *dst = '\0';
 
   va_end(args);
-  return buffer;
+  return returnBuffer;
 }
