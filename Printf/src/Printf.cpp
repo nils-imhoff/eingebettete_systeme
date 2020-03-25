@@ -42,11 +42,11 @@ char *intToBaseString(int num, int base, char *c, char *end) {
 
 char *stringToString(char *dst, const void *end, char *toCopy,
                      unsigned int limit) {
-  unsigned int loopCounter = 0;
-  while (toCopy[loopCounter] != '\0' && dst < end && loopCounter < limit) {
-    *dst = toCopy[loopCounter];
+  unsigned int loop = 0;
+  while (toCopy[loop] != '\0' && dst < end && loop < limit) {
+    *dst = toCopy[loop];
     dst++;
-    loopCounter++;
+    loop++;
   }
 
   return dst;
