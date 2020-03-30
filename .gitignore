@@ -30,3 +30,10 @@
 *.exe
 *.out
 *.app
+Printf/Makefile
+cmd/bin/uebung01
+cmd/bin/utuebung01
+*.mk
+cmd/Makefile
+Printf/bin/uebung01
+Printf/bin/utuebung01

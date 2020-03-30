@@ -1,38 +1,45 @@
 #include "../include/Printf.h"
-
 static const unsigned int MAX_INT_STRING_LENGTH = lengthOfInt(UINT_MAX) + 1;
 static const unsigned int MAX_INT_HEXSTRING_LENGTH = sizeof(int) * 2;
 static const unsigned int MAX_INT_BINARYSTRING_LENGTH = (sizeof(int) * 8);
 
-int lengthOfInt(unsigned int n) {
+int lengthOfInt(unsigned int n)
+{
   int i = 0;
-  while (n > 0) {
+  while (n > 0)
+  {
     n = n / 10;
-    i++;
+    ++i;
   }
   return i;
 }
 
-char *intToBaseString(int num, int base, char *c, char *end) {
+char *intToBaseString(int num, int base, char *c, char *end)
+{
   *end = '\0';
   unsigned int remainder;
 
   unsigned int numUns = static_cast<unsigned int>(num);
 
-  if (numUns == 0) {
-    end--;
+  if (numUns == 0)
+  {
+    --end;
     *end = '0';
     return end;
   }
 
-  while (numUns != 0 && c < end) {
-    end--;
+  while (numUns != 0 && c < end)
+  {
+    --end;
     remainder = numUns % base;
     numUns = numUns / base;
 
-    if (remainder <= 9) {
+    if (remainder <= 9)
+    {
       *end = '0' + remainder;
-    } else {
+    }
+    else
+    {
       *end = 'a' + remainder - 10;
     }
   }
@@ -41,19 +48,23 @@ char *intToBaseString(int num, int base, char *c, char *end) {
 }
 
 char *stringToString(char *dst, const void *end, char *toCopy,
-                     unsigned int limit) {
+                     unsigned int limit)
+{
   unsigned int loop = 0;
-  while (toCopy[loop] != '\0' && dst < end && loop < limit) {
+  while (toCopy[loop] != '\0' && dst < end && loop < limit)
+  {
     *dst = toCopy[loop];
-    dst++;
-    loop++;
+    ++dst;
+    ++loop;
   }
 
   return dst;
 }
 
-char *Printf(char *dst, const void *end, const char *fmt...) {
-  if (dst == nullptr || end == nullptr || fmt == nullptr || dst >= end) {
+char *Printf(char *dst, const void *end, const char *fmt, ...)
+{
+  if (dst == nullptr || end == nullptr || fmt == nullptr || dst >= end)
+  {
     return nullptr;
   }
 
@@ -64,102 +75,126 @@ char *Printf(char *dst, const void *end, const char *fmt...) {
 
   char buffer[MAX_INT_BINARYSTRING_LENGTH];
 
-  while (dst < end && *fmt != '\0') {
-    if (*fmt == '%') {
-      if (lastWasPercent) {
+  while (dst < end && *fmt != '\0')
+  {
+    if (*fmt == '%')
+    {
+      if (lastWasPercent)
+      {
         *dst = '%';
-        dst++;
+        ++dst;
         lastWasPercent = false;
-      } else {
+      }
+      else
+      {
         lastWasPercent = true;
       }
-    } else {
-      if (lastWasPercent) {
-        switch (*fmt) {
-          case 'd': {
-            int i = va_arg(args, int);
-            if (i < 0) {
-              i = i * (-1);
-              *dst = '-';
-              dst++;
-            }
-            char *stringHelper = intToBaseString(
-                i, 10, buffer, buffer + MAX_INT_STRING_LENGTH - 1);
-
-            dst = stringToString(dst, end, stringHelper,
-                                 MAX_INT_STRING_LENGTH);
-            break;
+    }
+    else
+    {
+      if (lastWasPercent)
+      {
+        switch (*fmt)
+        {
+        case 'd':
+        {
+          int i = va_arg(args, int);
+          if (i < 0)
+          {
+            i = i * (-1);
+            *dst = '-';
+            ++dst;
           }
-          case 'u': {
-            int i = va_arg(args, int);
-            char *stringHelper = intToBaseString(
-                i, 10, buffer, buffer + MAX_INT_STRING_LENGTH - 1);
+          char *stringHelper = intToBaseString(
+              i, 10, buffer, buffer + MAX_INT_STRING_LENGTH - 1);
 
-            dst = stringToString(dst, end, stringHelper,
-                                 MAX_INT_STRING_LENGTH);
-            break;
+          dst = stringToString(dst, end, stringHelper,
+                               MAX_INT_STRING_LENGTH);
+          break;
+        }
+        case 'u':
+        {
+          int i = va_arg(args, int);
+          char *stringHelper = intToBaseString(
+              i, 10, buffer, buffer + MAX_INT_STRING_LENGTH - 1);
+
+          dst = stringToString(dst, end, stringHelper,
+                               MAX_INT_STRING_LENGTH);
+          break;
+        }
+        case 'c':
+        {
+          int i = va_arg(args, int);
+          *dst = static_cast<char>(i);
+          ++dst;
+          break;
+        }
+        case 's':
+        {
+          char *stringHelper = va_arg(args, char *);
+
+          dst = stringToString(dst, end, stringHelper, UINT_MAX);
+          break;
+        }
+        case 'x':
+        {
+          *dst = '0';
+          ++dst;
+          if (dst < end)
+          {
+            *dst = 'x';
+            ++dst;
           }
-          case 'c': {
-            int i = va_arg(args, int);
-            *dst = static_cast<char>(i);
-            dst++;
-            break;
+          else
+          {
+            continue;
           }
-          case 's': {
-            char *stringHelper = va_arg(args, char *);
 
-            dst = stringToString(dst, end, stringHelper, UINT_MAX);
-            break;
+          int i = va_arg(args, int);
+
+          char *stringHelper = intToBaseString(
+              i, 16, buffer, buffer + MAX_INT_BINARYSTRING_LENGTH - 1);
+
+          dst = stringToString(dst, end, stringHelper,
+                               MAX_INT_HEXSTRING_LENGTH);
+
+          break;
+        }
+        case 'b':
+        {
+          *dst = '0';
+          ++dst;
+          if (dst < end)
+          {
+            *dst = 'b';
+            ++dst;
           }
-          case 'x': {
-            *dst = '0';
-            dst++;
-            if (dst < end) {
-              *dst = 'x';
-              dst++;
-            } else {
-              continue;
-            }
-
-            int i = va_arg(args, int);
-
-            char *stringHelper = intToBaseString(
-                i, 16, buffer, buffer + MAX_INT_BINARYSTRING_LENGTH - 1);
-
-            dst = stringToString(dst, end, stringHelper,
-                                 MAX_INT_HEXSTRING_LENGTH);
-
-            break;
+          else
+          {
+            continue;
           }
-          case 'b': {
-            *dst = '0';
-            dst++;
-            if (dst < end) {
-              *dst = 'b';
-              dst++;
-            } else {
-              continue;
-            }
 
-            int i = va_arg(args, int);
-            char *stringHelper = intToBaseString(
-                i, 2, buffer, buffer + MAX_INT_BINARYSTRING_LENGTH - 1);
+          int i = va_arg(args, int);
+          char *stringHelper = intToBaseString(
+              i, 2, buffer, buffer + MAX_INT_BINARYSTRING_LENGTH - 1);
 
-            dst = stringToString(dst, end, stringHelper,
-                                 MAX_INT_BINARYSTRING_LENGTH);
-            break;
-          }
-          default:
-            return nullptr;
+          dst = stringToString(dst, end, stringHelper,
+                               MAX_INT_BINARYSTRING_LENGTH);
+          break;
+        }
+        default:
+          return nullptr;
         }
         lastWasPercent = false;
-      } else {
+      }
+      else
+      {
         *dst = *fmt;
-        dst++;
+        ++dst;
       }
     }
 
-    fmt++;
+    ++fmt;
   }
 
   *dst = '\0';
