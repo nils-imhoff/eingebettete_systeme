@@ -93,11 +93,6 @@ char* Printf(char* dst, const void* end, const char* fmt...)
     return returnPtr;
 }
 
-char* vaPrintf(char* dst, const void* end, const char* fmt, va_list args)
-{
-    if (dst == nullptr || end == nullptr || fmt == nullptr || dst >= end) {
-        return nullptr;
-    }
 
     char* startBuff = dst;
     bool lastWasPercent = false;
