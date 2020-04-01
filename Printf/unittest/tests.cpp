@@ -5,11 +5,11 @@
 
 TEST_CASE("Creates correct string", "") {
 
- SECTION("complex fmt with all specified replacements") {
+ SECTION("fmt all specified replacements") {
         char actualString[300];
         char fmt[] = "sint:%d -sint:%d unit:%u unit:%u char:%c string:%s hex:%x -hex:%x bin:%b -bin:%b prozent:%%";
-        char expectedString[] = "sint:0 -sint:-23 unit:0 unit:23 char:N string:abc123 hex:0x25 -hex:0xf38b90ed bin:0b111001011011100010 -bin:0b1111111110010101100000000100111 prozent:%";
-        char* pointerResult = Printf(actualString, actualString + 300 - 1, fmt, 0, -23, 0, 23, 'N', "abc123", 37, -208957203, 235234, -3489753);
+        char expectedString[] = "sint:0 -sint:-23 unit:0 unit:23 char:N string:abc123 hex:0xc8 -hex:0x38 bin:0b101010 -bin:0b10110 prozent:%";
+        char* pointerResult = Printf(actualString, actualString + 300 - 1, fmt, 0, -23, 0, 23, 'N', "abc123", 200, -200, 42, -42);
 
         REQUIRE(strncmp(pointerResult, expectedString, 170) == 0);
     }
