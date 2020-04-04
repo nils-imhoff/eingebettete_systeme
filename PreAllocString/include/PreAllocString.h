@@ -1,7 +1,6 @@
 #ifndef PREALLOCSTRING_H
 #define PREALLOCSTRING_H
 
-#include "../include/PreAllocString.h"
 #include "../include/Printf.h"
 
 #include <cstdarg>
