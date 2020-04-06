@@ -5,122 +5,122 @@
 
 TEST_CASE("Test implemented Operators") {
     SECTION("testing =operator with char") {
-        PreAllocString<11> myPreAllocString;
+        CREATE(myString, 11);
         char myChar = 'a';
-        myPreAllocString = myChar;
+        myString = myChar;
 
-        REQUIRE(myPreAllocString[0] == 'a');
-        REQUIRE(myPreAllocString[1] == '\0');
+        REQUIRE(myString[0] == 'a');
+        REQUIRE(myString[1] == '\0');
     }
 
     SECTION("testing =operator with const char*") {
-        PreAllocString<11> myPreAllocString;
+        CREATE(myString, 11);
         char myChar = 'z';
         const char* myConstCharPointer = &myChar;
-        myPreAllocString = myChar;
+        myString = myChar;
 
-        REQUIRE(myPreAllocString[0] == 'z');
-        REQUIRE(myPreAllocString[1] == '\0');
+        REQUIRE(myString[0] == 'z');
+        REQUIRE(myString[1] == '\0');
     }
 
     SECTION("testing += operator with char") {
-        PreAllocString<11> myPreAllocString;
-        myPreAllocString = 't';
-        myPreAllocString += 'e';
-        myPreAllocString += 's';
-        myPreAllocString += 't';
+        CREATE(myString, 11);
+        myString = 't';
+        myString += 'e';
+        myString += 's';
+        myString += 't';
 
-        REQUIRE(myPreAllocString[0] == 't');
-        REQUIRE(myPreAllocString[1] == 'e');
-        REQUIRE(myPreAllocString[2] == 's');
-        REQUIRE(myPreAllocString[3] == 't');
-        REQUIRE(myPreAllocString[4] == '\0');
+        REQUIRE(myString[0] == 't');
+        REQUIRE(myString[1] == 'e');
+        REQUIRE(myString[2] == 's');
+        REQUIRE(myString[3] == 't');
+        REQUIRE(myString[4] == '\0');
     }
 
     SECTION("testing += operator with const char*") {
-        PreAllocString<11> myPreAllocString;
+        CREATE(myString, 11);
         const char* testString = "testString";
-        myPreAllocString += testString;
+        myString += testString;
 
-        REQUIRE(strncmp(static_cast<const char*>(myPreAllocString), testString, 11) == 0);
+        REQUIRE(strncmp(static_cast<const char*>(myString), testString, 11) == 0);
     }
 }
 
 TEST_CASE("Testing member functions") {
     SECTION("Testing GetLength") {
-        PreAllocString<11> myPreAllocString;
-        myPreAllocString = 't';
-        myPreAllocString += 'e';
-        myPreAllocString += 's';
-        myPreAllocString += 't';
+        CREATE(myString, 11);
+        myString = 't';
+        myString += 'e';
+        myString += 's';
+        myString += 't';
 
-        REQUIRE(myPreAllocString.GetLength() == 4);
+        REQUIRE(myString.GetLength() == 4);
     }
 
     SECTION("Testing SizeOf") {
-        PreAllocString<11> myPreAllocString;
+        CREATE(myString, 11);
 
-        REQUIRE(myPreAllocString.SizeOf() == 11);
+        REQUIRE(myString.SizeOf() == 11);
     }
 
     SECTION("Testing Empty") {
-        PreAllocString<11> myPreAllocString;
-        myPreAllocString += 'a';
+        CREATE(myString, 11);
+        myString += 'a';
 
-        REQUIRE(myPreAllocString[0] == 'a');
+        REQUIRE(myString[0] == 'a');
 
-        myPreAllocString.Empty();
+        myString.Empty();
 
-        REQUIRE(myPreAllocString[0] == '\0');
-        REQUIRE(myPreAllocString.GetLength() == 0);
+        REQUIRE(myString[0] == '\0');
+        REQUIRE(myString.GetLength() == 0);
     }
 
     SECTION("Testing Add Whitespace") {
-        PreAllocString<11> myPreAllocString;
-        myPreAllocString = 't';
-        myPreAllocString += 'e';
-        myPreAllocString += 's';
-        myPreAllocString.AddWhiteSpace();
-        myPreAllocString += 't';
+       CREATE(myString, 11);
+        myString = 't';
+        myString += 'e';
+        myString += 's';
+        myString.AddWhiteSpace();
+        myString += 't';
 
 
-        REQUIRE(myPreAllocString[0] == 't');
-        REQUIRE(myPreAllocString[1] == 'e');
-        REQUIRE(myPreAllocString[2] == 's');
-        REQUIRE(myPreAllocString[3] == ' ');
-        REQUIRE(myPreAllocString[4] == 't');
-        REQUIRE(myPreAllocString[5] == '\0');
+        REQUIRE(myString[0] == 't');
+        REQUIRE(myString[1] == 'e');
+        REQUIRE(myString[2] == 's');
+        REQUIRE(myString[3] == ' ');
+        REQUIRE(myString[4] == 't');
+        REQUIRE(myString[5] == '\0');
     }
 }
 
 TEST_CASE("Class Respects boundaries of string") {
     SECTION("Using += char") {
-        PreAllocString<3> myPreAllocString;
-        myPreAllocString += 'e';
-        myPreAllocString += 'e';
-        myPreAllocString += 'e';
+        CREATE(myString, 3);
+        myString += 'e';
+        myString += 'e';
+        myString += 'e';
 
-        REQUIRE(myPreAllocString[2] == '\0');
+        REQUIRE(myString[2] == '\0');
     }
 
     SECTION("Using += string" ) {
-        PreAllocString<10> myPreAllocString;
-        myPreAllocString += "1234567890";
+        CREATE(myString, 10);
+        myString += "1234567890";
 
-        REQUIRE(strncmp(static_cast<const char*>(myPreAllocString), "123456789", 10) == 0);
+        REQUIRE(strncmp(static_cast<const char*>(myString), "123456789", 10) == 0);
     }
 
     SECTION("Using = string" ) {
-        PreAllocString<10> myPreAllocString;
-        myPreAllocString = "1234567890";
+        CREATE(myString, 10);
+        myString = "1234567890";
 
-        REQUIRE(strncmp(static_cast<const char*>(myPreAllocString), "123456789", 10) == 0);
+        REQUIRE(strncmp(static_cast<const char*>(myString), "123456789", 10) == 0);
     }
 
     SECTION("Using = string AddFormat" ) {
-        PreAllocString<10> myPreAllocString;
-        myPreAllocString.AddFormat("%s", "1234567890");
-        REQUIRE(strncmp(static_cast<const char*>(myPreAllocString), "123456789", 10) == 0);
+        CREATE(myString, 10);
+        myString.AddFormat("%s", "1234567890");
+        REQUIRE(strncmp(static_cast<const char*>(myString), "123456789", 10) == 0);
     }
 }
 

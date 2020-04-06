@@ -37,3 +37,6 @@ cmd/bin/utuebung01
 cmd/Makefile
 Printf/bin/uebung01
 Printf/bin/utuebung01
+PreAllocString/bin/uebung02
+PreAllocString/bin/utuebung02
+PreAllocString/Makefile

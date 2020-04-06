@@ -1,6 +1,5 @@
 #include "../include/PreAllocString.h"
 #include "../include/Printf.h"
-#include <iostream>
 
 int main() {
     CREATE(test, 12);
@@ -8,23 +7,22 @@ int main() {
     test+='b';
     test+='c';
     test+='d';
-    printf("das ist der test: %s\n", static_cast<const char*>(test));
+    
 
-    PreAllocString<3> myPreAllocString;
-    myPreAllocString += 'e';
-    myPreAllocString += 'f';
-    myPreAllocString += 'g';
-    myPreAllocString += 'h';
-    myPreAllocString += 'i';
-    myPreAllocString += 'k';
-    myPreAllocString += 'l';
+    CREATE(test2, 3);
+    test2 += 'e';
+    test2 += 'f';
+    test2 += 'g';
+    test2 += 'h';
+    test2 += 'i';
+    test2 += 'k';
+    test2 += 'l';
 
 
-    printf("+=: %s\n", static_cast<const char*>(myPreAllocString));
+    
 
-    PreAllocString<10> myPreAllocString3;
-    myPreAllocString3.AddFormat("%s", "1234567890");
-    printf("add format: %s\n", static_cast<const char*>(myPreAllocString3));
+    CREATE(test3, 10);
+    test3.AddFormat("%s", "1234567890");
 
     return 0;
 }
