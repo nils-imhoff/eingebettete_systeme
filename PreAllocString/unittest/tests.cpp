@@ -17,7 +17,7 @@ TEST_CASE("Test implemented Operators") {
         CREATE(myString, 11);
         char myChar = 'z';
         const char* myConstCharPointer = &myChar;
-        myString = myChar;
+        myString = myConstCharPointer;
 
         REQUIRE(myString[0] == 'z');
         REQUIRE(myString[1] == '\0');
