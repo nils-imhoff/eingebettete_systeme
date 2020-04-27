@@ -1,5 +1,6 @@
 #include "7Segment.h"
 #include "catch.hpp"
+#include <cstring>
 
 TEST_CASE("Test Single Digit") {
   SECTION("Digit 0") {
